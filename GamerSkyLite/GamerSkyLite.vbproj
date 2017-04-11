@@ -1,0 +1,288 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{8912D34C-CBFB-422D-8F7A-6FEF302E3618}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <StartupObject>GamerSkyLite.My.MyApplication</StartupObject>
+    <RootNamespace>GamerSkyLite</RootNamespace>
+    <AssemblyName>GamerSkyLite</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>WindowsForms</MyType>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>GamerSkyLite.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>GamerSkyLite.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionExplicit>On</OptionExplicit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionCompare>Binary</OptionCompare>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionStrict>Off</OptionStrict>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\GamerSky.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Windows.Forms" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Xml.Linq" />
+    <Import Include="System.Threading.Tasks" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ConextClass.vb" />
+    <Compile Include="GamerSkyProcess.vb" />
+    <Compile Include="MessageBox.Designer.vb">
+      <DependentUpon>MessageBox.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MessageBox.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MouseActiveEvent.vb" />
+    <Compile Include="MyPanel.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="PagePreviewItem.Designer.vb">
+      <DependentUpon>PagePreviewItem.vb</DependentUpon>
+    </Compile>
+    <Compile Include="PagePreviewItem.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ReaderForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ReaderForm.Designer.vb">
+      <DependentUpon>ReaderForm.vb</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="UnityResource.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UnityResource.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MessageBox.resx">
+      <DependentUpon>MessageBox.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PagePreviewItem.resx">
+      <DependentUpon>PagePreviewItem.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ReaderForm.resx">
+      <DependentUpon>ReaderForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UnityResource.resx">
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>UnityResource.Designer.vb</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="My Project\app.manifest" />
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ClockIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BGI.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Close_0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Close_1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Close_2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Max_0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Max_1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Max_2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Min_0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Min_1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Min_2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Restore_0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Restore_1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Restore_2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CustomButton_0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CustomButton_1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CustomButton_2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SmallButton_0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SmallButton_1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SmallButton_2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MessageBoxBGI.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Error.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Info.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Question.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Warning.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PaperShadow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Refresh_0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Refresh_1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Refresh_2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Download_0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Download_1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Download_2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GoBack_0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GoBack_1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GoBack_2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ToolBG.png" />
+    <None Include="Resources\Clean_0.png" />
+    <None Include="Resources\Clean_1.png" />
+    <None Include="Resources\Clean_2.png" />
+    <None Include="Resources\PaperShadow_hl.png" />
+    <None Include="Resources\Browser_0.png" />
+    <None Include="Resources\Browser_1.png" />
+    <None Include="Resources\Browser_2.png" />
+    <None Include="Resources\GamerSky.ico" />
+    <Content Include="TaskList.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
