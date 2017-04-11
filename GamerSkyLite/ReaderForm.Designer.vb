@@ -27,11 +27,11 @@ Partial Class ReaderForm
         Me.MaxButton = New System.Windows.Forms.Label()
         Me.RestoreButton = New System.Windows.Forms.Label()
         Me.LogoLabel = New System.Windows.Forms.Label()
-        Me.PreviewItemPanel = New GamerSkyLite.MyPanel()
         Me.ToolPanel = New GamerSkyLite.MyPanel()
-        Me.RefreshButton = New System.Windows.Forms.Label()
-        Me.GoBackButton = New System.Windows.Forms.Label()
         Me.CleanButton = New System.Windows.Forms.Label()
+        Me.GoBackButton = New System.Windows.Forms.Label()
+        Me.RefreshButton = New System.Windows.Forms.Label()
+        Me.PreviewItemPanel = New GamerSkyLite.MyPanel()
         Me.ToolPanel.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -88,15 +88,6 @@ Partial Class ReaderForm
         Me.LogoLabel.Text = "GamerSky-Lite [需求才是第一生产力！—Leon]"
         Me.LogoLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
-        'PreviewItemPanel
-        '
-        Me.PreviewItemPanel.AutoScroll = True
-        Me.PreviewItemPanel.BackColor = System.Drawing.Color.FromArgb(CType(CType(50, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.PreviewItemPanel.Location = New System.Drawing.Point(139, 64)
-        Me.PreviewItemPanel.Name = "PreviewItemPanel"
-        Me.PreviewItemPanel.Size = New System.Drawing.Size(671, 425)
-        Me.PreviewItemPanel.TabIndex = 0
-        '
         'ToolPanel
         '
         Me.ToolPanel.BackColor = System.Drawing.Color.Transparent
@@ -109,20 +100,20 @@ Partial Class ReaderForm
         Me.ToolPanel.Size = New System.Drawing.Size(75, 250)
         Me.ToolPanel.TabIndex = 11
         '
-        'RefreshButton
+        'CleanButton
         '
-        Me.RefreshButton.BackColor = System.Drawing.Color.Transparent
-        Me.RefreshButton.Font = New System.Drawing.Font("微软雅黑", 10.5!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
-        Me.RefreshButton.ForeColor = System.Drawing.Color.White
-        Me.RefreshButton.Image = Global.GamerSkyLite.My.Resources.UnityResource.Refresh_0
-        Me.RefreshButton.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.RefreshButton.Location = New System.Drawing.Point(13, 17)
-        Me.RefreshButton.Name = "RefreshButton"
-        Me.RefreshButton.Size = New System.Drawing.Size(48, 64)
-        Me.RefreshButton.TabIndex = 14
-        Me.RefreshButton.Tag = "Refresh_"
-        Me.RefreshButton.Text = "刷新"
-        Me.RefreshButton.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.CleanButton.BackColor = System.Drawing.Color.Transparent
+        Me.CleanButton.Font = New System.Drawing.Font("微软雅黑", 10.5!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
+        Me.CleanButton.ForeColor = System.Drawing.Color.White
+        Me.CleanButton.Image = Global.GamerSkyLite.My.Resources.UnityResource.Clean_0
+        Me.CleanButton.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.CleanButton.Location = New System.Drawing.Point(13, 169)
+        Me.CleanButton.Name = "CleanButton"
+        Me.CleanButton.Size = New System.Drawing.Size(48, 66)
+        Me.CleanButton.TabIndex = 16
+        Me.CleanButton.Tag = "Clean_"
+        Me.CleanButton.Text = "清理"
+        Me.CleanButton.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         '
         'GoBackButton
         '
@@ -133,26 +124,35 @@ Partial Class ReaderForm
         Me.GoBackButton.ImageAlign = System.Drawing.ContentAlignment.TopCenter
         Me.GoBackButton.Location = New System.Drawing.Point(13, 93)
         Me.GoBackButton.Name = "GoBackButton"
-        Me.GoBackButton.Size = New System.Drawing.Size(48, 64)
+        Me.GoBackButton.Size = New System.Drawing.Size(48, 66)
         Me.GoBackButton.TabIndex = 15
         Me.GoBackButton.Tag = "GoBack_"
         Me.GoBackButton.Text = "返回"
         Me.GoBackButton.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         '
-        'CleanButton
+        'RefreshButton
         '
-        Me.CleanButton.BackColor = System.Drawing.Color.Transparent
-        Me.CleanButton.Font = New System.Drawing.Font("微软雅黑", 10.5!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
-        Me.CleanButton.ForeColor = System.Drawing.Color.White
-        Me.CleanButton.Image = Global.GamerSkyLite.My.Resources.UnityResource.Clean_0
-        Me.CleanButton.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.CleanButton.Location = New System.Drawing.Point(13, 169)
-        Me.CleanButton.Name = "CleanButton"
-        Me.CleanButton.Size = New System.Drawing.Size(48, 64)
-        Me.CleanButton.TabIndex = 16
-        Me.CleanButton.Tag = "Clean_"
-        Me.CleanButton.Text = "清理"
-        Me.CleanButton.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.RefreshButton.BackColor = System.Drawing.Color.Transparent
+        Me.RefreshButton.Font = New System.Drawing.Font("微软雅黑", 10.5!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
+        Me.RefreshButton.ForeColor = System.Drawing.Color.White
+        Me.RefreshButton.Image = Global.GamerSkyLite.My.Resources.UnityResource.Refresh_0
+        Me.RefreshButton.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.RefreshButton.Location = New System.Drawing.Point(13, 17)
+        Me.RefreshButton.Name = "RefreshButton"
+        Me.RefreshButton.Size = New System.Drawing.Size(48, 66)
+        Me.RefreshButton.TabIndex = 14
+        Me.RefreshButton.Tag = "Refresh_"
+        Me.RefreshButton.Text = "刷新"
+        Me.RefreshButton.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        '
+        'PreviewItemPanel
+        '
+        Me.PreviewItemPanel.AutoScroll = True
+        Me.PreviewItemPanel.BackColor = System.Drawing.Color.FromArgb(CType(CType(50, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer))
+        Me.PreviewItemPanel.Location = New System.Drawing.Point(139, 64)
+        Me.PreviewItemPanel.Name = "PreviewItemPanel"
+        Me.PreviewItemPanel.Size = New System.Drawing.Size(671, 425)
+        Me.PreviewItemPanel.TabIndex = 0
         '
         'ReaderForm
         '
