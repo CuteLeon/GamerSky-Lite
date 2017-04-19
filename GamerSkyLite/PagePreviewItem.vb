@@ -65,6 +65,16 @@ Public Class PagePreviewItem
         End Get
         Set(value As String)
             Try
+                If File.Exists(ReaderForm.CacheDirectory & Path.GetFileName(value)) Then
+                    ImagePreviewBox.Text = vbNullString
+                    Using PreviewImageStream As FileStream = New FileStream(ReaderForm.CacheDirectory & Path.GetFileName(value), FileMode.Open)
+                        ImagePreviewBox.Image = Image.FromStream(PreviewImageStream)
+                    End Using
+                    Exit Property
+                Else
+                    TitleLabel.Font = New Font(TitleLabel.Font, FontStyle.Italic Or FontStyle.Underline Or FontStyle.Bold)
+                End If
+
                 Dim ImageWebClient As WebClient = New WebClient With {.BaseAddress = value, .Credentials = CredentialCache.DefaultCredentials}
                 AddHandler ImageWebClient.DownloadFileCompleted,
                     Sub(sender As Object, e As AsyncCompletedEventArgs)
@@ -76,7 +86,7 @@ Public Class PagePreviewItem
                         End Using
                     End Sub
                 ImageWebClient.DownloadFileAsync(New Uri(value), ReaderForm.CacheDirectory & Path.GetFileName(value))
-            Catch ex As Exception
+                Catch ex As Exception
                 ImagePreviewBox.Text = "图像下载失败！"
             End Try
         End Set
@@ -96,6 +106,9 @@ Public Class PagePreviewItem
     End Property
 
 #End Region
+
+    '下载图像时声场HTML
+    Dim HTMLWriter As StreamWriter
 
     '图像下载目录
     Private DownloadDirectory As String
@@ -273,13 +286,17 @@ Public Class PagePreviewItem
         '        MessageBox.ShowMessagebox("删除文章图像缓存时出错", ex.Message, MessageBox.Icons._Error, Me)
         '    End Try
         'End If
+
+
         Try
             Directory.CreateDirectory(DownloadDirectory)
         Catch ex As Exception
             MessageBox.ShowMessagebox("创建目录时出错！", ex.Message, MessageBox.Icons._Error, ReaderForm) : Exit Sub
         End Try
+        ExportHTMLHead()
 
-        Dim ImagePath As String = DownloadDirectory & Path.GetFileName(ContentList(in_DownloadState).ImageLink)
+        Dim FileName As String = Path.GetFileName(ContentList(in_DownloadState).ImageLink)
+        Dim ImagePath As String = DownloadDirectory & FileName
         Dim ImageWebClient As WebClient = New WebClient()
         AddHandler ImageWebClient.DownloadFileCompleted,
             Sub(sender As Object, e As AsyncCompletedEventArgs)
@@ -287,7 +304,9 @@ Public Class PagePreviewItem
                     'todo:使用文件：ImagePath
                     Do While File.Exists(ImagePath) And in_DownloadState < ContentList.Count - 1
                         in_DownloadState += 1
-                        ImagePath = DownloadDirectory & Path.GetFileName(ContentList(in_DownloadState).ImageLink)
+                        FileName = Path.GetFileName(ContentList(in_DownloadState).ImageLink)
+                        If HTMLWriter IsNot Nothing Then HTMLWriter.WriteLine("<img src="".\{0}"" alt=""{1}""><br>{2}<br><hr>", FileName, ContentList(in_DownloadState).ImageLink, ContentList(in_DownloadState).Text)
+                        ImagePath = DownloadDirectory & FileName
                     Loop
 
                     If in_DownloadState >= ContentList.Count - 1 Then
@@ -323,6 +342,24 @@ Public Class PagePreviewItem
     Private Sub DownloadCompleted()
         in_Downloading = False
         DownloadButton.Text = "下载完成：" & ContentList.Count
+        If HTMLWriter IsNot Nothing Then ExportHTMLFoot()
+    End Sub
+
+    Private Sub ExportHTMLHead()
+        Try
+            HTMLWriter = New StreamWriter(DownloadDirectory & Title & ".html")
+            HTMLWriter.Write("<html><body style=""width:70%;margin:0 auto""><center><pre><h1><strong>{0}</strong></h1></pre>" & vbCrLf, Title)
+        Catch ex As Exception
+            MessageBox.ShowMessagebox("生成精简HTML时出错！", ex.Message, MessageBox.Icons._Error, ReaderForm)
+        End Try
+    End Sub
+
+    Private Sub ExportHTMLFoot()
+        Try
+            HTMLWriter.Write(vbCrLf & "</center></body></html>")
+        Catch ex As Exception
+            MessageBox.ShowMessagebox("生成精简HTML时出错！", ex.Message, MessageBox.Icons._Error, ReaderForm)
+        End Try
     End Sub
 
 End Class
