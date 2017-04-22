@@ -21,7 +21,6 @@ Public Module GamerSkyHomeProcess
             WebClientObject.DownloadStringAsync(New Uri(LinkAddress))
         Catch ex As Exception
             Throw ex
-
         End Try
     End Sub
 

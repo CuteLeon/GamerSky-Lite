@@ -32,6 +32,7 @@ Partial Class ReaderForm
         Me.GoBackButton = New System.Windows.Forms.Label()
         Me.RefreshButton = New System.Windows.Forms.Label()
         Me.PreviewItemPanel = New GamerSkyLite.MyPanel()
+        Me.HTMLBrowser = New System.Windows.Forms.WebBrowser()
         Me.ToolPanel.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -151,8 +152,17 @@ Partial Class ReaderForm
         Me.PreviewItemPanel.BackColor = System.Drawing.Color.FromArgb(CType(CType(50, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer))
         Me.PreviewItemPanel.Location = New System.Drawing.Point(139, 64)
         Me.PreviewItemPanel.Name = "PreviewItemPanel"
-        Me.PreviewItemPanel.Size = New System.Drawing.Size(671, 425)
+        Me.PreviewItemPanel.Size = New System.Drawing.Size(766, 494)
         Me.PreviewItemPanel.TabIndex = 0
+        '
+        'HTMLBrowser
+        '
+        Me.HTMLBrowser.Location = New System.Drawing.Point(234, 37)
+        Me.HTMLBrowser.MinimumSize = New System.Drawing.Size(20, 20)
+        Me.HTMLBrowser.Name = "HTMLBrowser"
+        Me.HTMLBrowser.Size = New System.Drawing.Size(766, 494)
+        Me.HTMLBrowser.TabIndex = 13
+        Me.HTMLBrowser.Visible = False
         '
         'ReaderForm
         '
@@ -161,6 +171,7 @@ Partial Class ReaderForm
         Me.BackgroundImage = Global.GamerSkyLite.My.Resources.UnityResource.BGI
         Me.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.ClientSize = New System.Drawing.Size(913, 593)
+        Me.Controls.Add(Me.HTMLBrowser)
         Me.Controls.Add(Me.ToolPanel)
         Me.Controls.Add(Me.PreviewItemPanel)
         Me.Controls.Add(Me.LogoLabel)
@@ -188,4 +199,5 @@ Partial Class ReaderForm
     Friend WithEvents CleanButton As Label
     Friend WithEvents GoBackButton As Label
     Friend WithEvents RefreshButton As Label
+    Friend WithEvents HTMLBrowser As WebBrowser
 End Class

@@ -1,20 +1,6 @@
 ﻿Imports System.IO
 
 Public Class ReaderForm
-    ''' <summary>
-    ''' 当前程序所显示状态
-    ''' </summary>
-    Private Enum FrameStateEnum
-        ''' <summary>
-        ''' 正在显示主页文章目录
-        ''' </summary>
-        Home = 0
-        ''' <summary>
-        ''' 正在显示文章内容
-        ''' </summary>
-        Page = 1
-    End Enum
-    Dim FrameState As FrameStateEnum = FrameStateEnum.Home
 
     ''' <summary>
     ''' 文章目录的主页地址
@@ -73,11 +59,14 @@ Public Class ReaderForm
         RestoreButton.Left = MinButton.Right + 5
         MaxButton.Left = RestoreButton.Left
         CloseButton.Left = RestoreButton.Right + 5
+        With PreviewItemPanel
+            .Left = ToolPanel.Right + 10
+            .Width = Me.Width - .Left
+            .Top = LogoLabel.Bottom + 10
+            .Height = Me.Height - .Top
 
-        PreviewItemPanel.Left = Me.Width * 0.1
-        PreviewItemPanel.Width = Me.Width * 0.8
-        PreviewItemPanel.Height = (Me.Height - LogoLabel.Bottom) * 0.9
-        PreviewItemPanel.Top = (Me.Height - LogoLabel.Bottom - PreviewItemPanel.Height) * 0.5 + LogoLabel.Bottom
+            HTMLBrowser.SetBounds(.Left, .Top, .Width, .Height)
+        End With
     End Sub
 
     Private Sub MinButton_Click(sender As Object, e As EventArgs) Handles MinButton.Click
@@ -104,7 +93,9 @@ Public Class ReaderForm
 #End Region
 
     Private Sub RefreshButton_Click(sender As Object, e As EventArgs) Handles RefreshButton.Click
-        If FrameState = FrameStateEnum.Home Then
+        If HTMLBrowser.Visible Then
+            HTMLBrowser.Refresh()
+        Else
             Do While PreviewItemPanel.Controls.Count > 0
                 PreviewItemPanel.Controls(0).Dispose()
             Loop
@@ -123,6 +114,21 @@ Public Class ReaderForm
 
     Private Sub PreviewItemPanel_Click(sender As Object, e As EventArgs) Handles PreviewItemPanel.Click
         PreviewItemPanel.Refresh()
+    End Sub
+
+    Private Sub GoBackButton_Click(sender As Object, e As EventArgs) Handles GoBackButton.Click
+        If HTMLBrowser.Visible Then
+            HTMLBrowser.Hide()
+        Else
+            HTMLBrowser.BringToFront()
+            HTMLBrowser.Show()
+        End If
+    End Sub
+
+    Public Sub BrowseHTML(HTMLPath)
+        HTMLBrowser.BringToFront()
+        HTMLBrowser.Show()
+        HTMLBrowser.Navigate(HTMLPath)
     End Sub
 
 End Class

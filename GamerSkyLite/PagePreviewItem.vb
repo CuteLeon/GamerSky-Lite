@@ -116,6 +116,8 @@ Public Class PagePreviewItem
     Private in_DownloadState As Integer
     '记录下载状态
     Private in_Downloading As Boolean
+    '生成的HTML文件路径
+    Private HTMLPath As String
 
     ''' <summary>
     ''' 抽象所链接页面的文章内图片链接和正文
@@ -157,6 +159,7 @@ Public Class PagePreviewItem
         DownloadDirectory = ReaderForm.CacheDirectory & ItemID & "\"
         Time = strTime
         LinkAddress = strLinkAddress
+        HTMLPath = DownloadDirectory & Title & ".html"
     End Sub
 #End Region
 
@@ -183,8 +186,9 @@ Public Class PagePreviewItem
 #Region "下载按钮"
     Private Sub DownloadButton_Click(sender As Object, e As EventArgs) Handles DownloadButton.Click
         If Not in_Downloading Then
-            If ContentList.Count > 0 AndAlso in_DownloadState = ContentList.Count Then
+            If ContentList.Count > 0 AndAlso in_DownloadState = ContentList.Count - 1 Then
                 '已经下载完成
+                ReaderForm.BrowseHTML(HTMLPath)
             Else
                 '开始下载
                 in_Downloading = True
@@ -201,6 +205,8 @@ Public Class PagePreviewItem
             End If
         Else
             '正在下载
+            in_Downloading = False
+            DownloadButton.Text = "已经停止下载"
 
         End If
     End Sub
@@ -218,6 +224,8 @@ Public Class PagePreviewItem
 #End Region
 
     Private Sub AnalysisPage(PageHTML As String)
+        If Not in_Downloading Then Exit Sub
+
         Dim MainPattern As String = "<([a-z]+)(?:(?!class)[^<>])*class=([""']?){0}\2[^>]*>(?>(?<o><\1[^>]*>)|(?<-o></\1>)|(?:(?!</?\1).))*(?(o)(?!))</\1>"
         Dim HTMLRegex As Regex, MatchResult As Match
         MainPattern = String.Format(MainPattern, Regex.Escape("Mid2L_con"))
@@ -235,6 +243,7 @@ Public Class PagePreviewItem
         Dim ItemRegex As Regex
         Dim ItemMatchResult As Match
         For Index As Integer = 0 To ImageHTMLs.Length - 1
+            If Not in_Downloading Then Exit Sub
             If InStr(ImageHTMLs(Index), "http://www.gamersky.com/showimage/id_gamersky.shtml?") Then
                 TitlePattern = "<a.*?shtml\?(?<imagelink>.+?)"""
             Else
@@ -251,14 +260,14 @@ Public Class PagePreviewItem
         TitlePattern = "<a href=""(?<nextpagelink>.+?)"">下一页</a>"
         ItemRegex = New Regex(TitlePattern, RegexOptions.IgnoreCase Or RegexOptions.Multiline)
         ItemMatchResult = ItemRegex.Match(ItemHTMLs(1))
-
-        'Debug.Print(ItemMatchResult.Groups("nextpagelink").Value)
+        If Not in_Downloading Then Exit Sub
         If ItemMatchResult.Groups("nextpagelink").Value <> vbNullString Then
             ReaderForm.Invoke(
                 Sub()
                     GamerSkyHomeProcess.GetHTML(ItemMatchResult.Groups("nextpagelink").Value, AddressOf AnalysisPage)
                 End Sub)
         Else
+            If Not in_Downloading Then Exit Sub
             DownloadButton.Text = "开始下载文章图像..."
             DownloadImage()
         End If
@@ -301,23 +310,25 @@ Public Class PagePreviewItem
         AddHandler ImageWebClient.DownloadFileCompleted,
             Sub(sender As Object, e As AsyncCompletedEventArgs)
                 If e.Error Is Nothing Then
-                    'todo:使用文件：ImagePath
+                    If in_DownloadState >= ContentList.Count - 1 Then
+                        DownloadCompleted()
+                        Exit Sub
+                    Else
+                        DownloadButton.Text = String.Format("下载进度：{0} / {1}", in_DownloadState, ContentList.Count)
+                    End If
+
                     Do While File.Exists(ImagePath) And in_DownloadState < ContentList.Count - 1
+                        If Not in_Downloading Then HTMLWriter.Close() : HTMLWriter.Dispose() : Exit Sub
                         in_DownloadState += 1
                         FileName = Path.GetFileName(ContentList(in_DownloadState).ImageLink)
                         If HTMLWriter IsNot Nothing Then HTMLWriter.WriteLine("<img src="".\{0}"" alt=""{1}""><br>{2}<br><hr>", FileName, ContentList(in_DownloadState).ImageLink, ContentList(in_DownloadState).Text)
                         ImagePath = DownloadDirectory & FileName
                     Loop
 
-                    If in_DownloadState >= ContentList.Count - 1 Then
-                        DownloadCompleted()
-                        Exit Sub
-                    Else
-                        DownloadButton.Text = String.Format("下载进度：{0} / {1}", in_DownloadState, ContentList.Count - 1)
-                    End If
-
                     ImageWebClient.DownloadFileAsync(New Uri(ContentList(in_DownloadState).ImageLink), ImagePath)
                 Else
+                    DownloadButton.Text = "下载失败：" & in_DownloadState
+                    DownloadButton.ForeColor = Color.Red
                     Try
                         File.Delete(ImagePath)
                     Catch ex As Exception
@@ -341,14 +352,14 @@ Public Class PagePreviewItem
 
     Private Sub DownloadCompleted()
         in_Downloading = False
-        DownloadButton.Text = "下载完成：" & ContentList.Count
+        DownloadButton.Text = "下载完成：" & ContentList.Count & " 张图片"
         If HTMLWriter IsNot Nothing Then ExportHTMLFoot()
     End Sub
 
     Private Sub ExportHTMLHead()
         Try
-            HTMLWriter = New StreamWriter(DownloadDirectory & Title & ".html")
-            HTMLWriter.Write("<html><body style=""width:70%;margin:0 auto""><center><pre><h1><strong>{0}</strong></h1></pre>" & vbCrLf, Title)
+            HTMLWriter = New StreamWriter(HTMLPath)
+            HTMLWriter.Write("<html><head><meta http-equiv=""Content-Type"" content=""text/html; charset=utf-8"" /></head><body style=""width:70%;margin:0 auto""><center><pre><h1><strong>{0}</strong></h1></pre>" & vbCrLf, Title)
         Catch ex As Exception
             MessageBox.ShowMessagebox("生成精简HTML时出错！", ex.Message, MessageBox.Icons._Error, ReaderForm)
         End Try
@@ -356,7 +367,9 @@ Public Class PagePreviewItem
 
     Private Sub ExportHTMLFoot()
         Try
-            HTMLWriter.Write(vbCrLf & "</center></body></html>")
+            HTMLWriter.Write(vbCrLf & "<<<< 文章结束 >>>></center></body></html>")
+            HTMLWriter.Close()
+            HTMLWriter.Dispose()
         Catch ex As Exception
             MessageBox.ShowMessagebox("生成精简HTML时出错！", ex.Message, MessageBox.Icons._Error, ReaderForm)
         End Try
