@@ -101,6 +101,7 @@ Public Class PagePreviewItem
             Return in_LinkAddress
         End Get
         Set(value As String)
+            If (Not value.StartsWith("http://www.gamersky.com")) Then value = "http://www.gamersky.com" & value
             in_LinkAddress = value
         End Set
     End Property
@@ -198,6 +199,8 @@ Public Class PagePreviewItem
                     GamerSkyHomeProcess.GetHTML(Me.LinkAddress, AddressOf AnalysisPage)
                 Catch ex As Exception
                     in_Downloading = False
+                    HTMLWriter.Close()
+                    HTMLWriter.Dispose()
                     DownloadButton.Text = "文章内容解析失败"
                     DownloadButton.ForeColor = Color.Red
                     MessageBox.ShowMessagebox("异步访问时出错：" & LinkAddress, ex.Message, MessageBox.Icons._Error, ReaderForm)
@@ -207,7 +210,8 @@ Public Class PagePreviewItem
             '正在下载
             in_Downloading = False
             DownloadButton.Text = "已经停止下载"
-
+            ContentList = New List(Of Content)
+            in_DownloadState = 0
         End If
     End Sub
 
@@ -225,7 +229,6 @@ Public Class PagePreviewItem
 
     Private Sub AnalysisPage(PageHTML As String)
         If Not in_Downloading Then Exit Sub
-
         Dim MainPattern As String = "<([a-z]+)(?:(?!class)[^<>])*class=([""']?){0}\2[^>]*>(?>(?<o><\1[^>]*>)|(?<-o></\1>)|(?:(?!</?\1).))*(?(o)(?!))</\1>"
         Dim HTMLRegex As Regex, MatchResult As Match
         MainPattern = String.Format(MainPattern, Regex.Escape("Mid2L_con"))
@@ -234,14 +237,15 @@ Public Class PagePreviewItem
         Dim MainHTML As String = MatchResult.Value
         If MainHTML = vbNullString Then MessageBox.ShowMessagebox("解析目录失败！", "未找到 class=Mid2L_con 的元素！", MessageBox.Icons._Error, ReaderForm) : Exit Sub
 
-        '分割，上部为正文内容，下部为页数导航"
-        Dim ItemHTMLs As String() = Strings.Split(MainHTML, "<!--{pe.begin.pagination}-->", 2)
-        If ItemHTMLs.Length < 2 Then MessageBox.ShowMessagebox("解析目录失败！", "分割 class=Mid2L_con 元素未得到文章列表！", MessageBox.Icons._Error, ReaderForm) : Exit Sub
-
-        Dim ImageHTMLs As String() = Strings.Split(ItemHTMLs(0), "</p>")
+        Dim ImageHTMLs As String()
         Dim TitlePattern As String
         Dim ItemRegex As Regex
         Dim ItemMatchResult As Match
+        '分割，上部为正文内容，下部为页数导航"
+        Dim ItemHTMLs As String() = Strings.Split(MainHTML, "<!--{pe.begin.pagination}-->", 2)
+
+        If ItemHTMLs.Length < 2 Then DownloadButton.Text = "解析目录失败" : MessageBox.ShowMessagebox("解析目录失败！", "分割 class=Mid2L_con 元素未得到文章列表！", MessageBox.Icons._Error, ReaderForm) : Exit Sub
+        ImageHTMLs = Strings.Split(ItemHTMLs(0), "</p>")
         For Index As Integer = 0 To ImageHTMLs.Length - 1
             If Not in_Downloading Then Exit Sub
             If InStr(ImageHTMLs(Index), "http://www.gamersky.com/showimage/id_gamersky.shtml?") Then
@@ -253,7 +257,10 @@ Public Class PagePreviewItem
             ItemMatchResult = ItemRegex.Match(ImageHTMLs(Index))
             Dim TempString As String() = Split(ImageHTMLs(Index), "</a><br>")
             If ItemMatchResult.Groups("imagelink").Value <> vbNullString Then
-                ContentList.Add(New Content() With {.ImageLink = ItemMatchResult.Groups("imagelink").Value, .Text = IIf(TempString.Length > 1, TempString.Last, vbNullString)})
+                ContentList.Add(New Content() With {
+                                    .ImageLink = ItemMatchResult.Groups("imagelink").Value,
+                                    .Text = IIf(TempString.Length > 1, TempString.Last, vbNullString)
+                                    })
             End If
         Next
         '读取下一页
@@ -267,7 +274,11 @@ Public Class PagePreviewItem
                     GamerSkyHomeProcess.GetHTML(ItemMatchResult.Groups("nextpagelink").Value, AddressOf AnalysisPage)
                 End Sub)
         Else
-            If Not in_Downloading Then Exit Sub
+            If Not in_Downloading Then HTMLWriter.Close() : HTMLWriter.Dispose() : Exit Sub
+            Try
+                File.WriteAllText(DownloadDirectory & "ImageLinks.txt", String.Join(vbCrLf, ContentList.Select(Function(content) content.ImageLink).ToArray()))
+            Catch ex As Exception
+            End Try
             DownloadButton.Text = "开始下载文章图像..."
             DownloadImage()
         End If
@@ -295,7 +306,6 @@ Public Class PagePreviewItem
         '        MessageBox.ShowMessagebox("删除文章图像缓存时出错", ex.Message, MessageBox.Icons._Error, Me)
         '    End Try
         'End If
-
 
         Try
             Directory.CreateDirectory(DownloadDirectory)
@@ -328,6 +338,7 @@ Public Class PagePreviewItem
                     ImageWebClient.DownloadFileAsync(New Uri(ContentList(in_DownloadState).ImageLink), ImagePath)
                 Else
                     DownloadButton.Text = "下载失败：" & in_DownloadState
+                    HTMLWriter.Close() : HTMLWriter.Dispose()
                     DownloadButton.ForeColor = Color.Red
                     Try
                         File.Delete(ImagePath)
@@ -348,6 +359,10 @@ Public Class PagePreviewItem
         AddHandler BrowserButton.MouseLeave, AddressOf MouseActiveEvent.MouseLeave
         AddHandler BrowserButton.MouseDown, AddressOf MouseActiveEvent.MouseDown
         AddHandler BrowserButton.MouseUp, AddressOf MouseActiveEvent.MouseUp
+        AddHandler LocationButton.MouseEnter, AddressOf MouseActiveEvent.MouseEnter
+        AddHandler LocationButton.MouseLeave, AddressOf MouseActiveEvent.MouseLeave
+        AddHandler LocationButton.MouseDown, AddressOf MouseActiveEvent.MouseDown
+        AddHandler LocationButton.MouseUp, AddressOf MouseActiveEvent.MouseUp
     End Sub
 
     Private Sub DownloadCompleted()
@@ -375,4 +390,11 @@ Public Class PagePreviewItem
         End Try
     End Sub
 
+    Private Sub TitleLabel_Click(sender As Object, e As EventArgs) Handles TitleLabel.Click
+        If File.Exists(HTMLPath) Then ReaderForm.BrowseHTML(HTMLPath)
+    End Sub
+
+    Private Sub LocationButton_Click(sender As Object, e As EventArgs) Handles LocationButton.Click
+        Process.Start(Me.DownloadDirectory)
+    End Sub
 End Class

@@ -275,6 +275,9 @@
     <None Include="Resources\Browser_1.png" />
     <None Include="Resources\Browser_2.png" />
     <None Include="Resources\GamerSky.ico" />
+    <None Include="Resources\Location_0.png" />
+    <None Include="Resources\Location_1.png" />
+    <None Include="Resources\Location_2.png" />
     <Content Include="TaskList.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />

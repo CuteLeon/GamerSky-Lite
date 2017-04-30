@@ -129,6 +129,7 @@ Public Class ReaderForm
         HTMLBrowser.BringToFront()
         HTMLBrowser.Show()
         HTMLBrowser.Navigate(HTMLPath)
+        HTMLBrowser.Focus()
     End Sub
 
 End Class

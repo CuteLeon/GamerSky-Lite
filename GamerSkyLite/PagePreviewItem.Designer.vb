@@ -28,6 +28,7 @@ Partial Class PagePreviewItem
         Me.TitleLabel = New System.Windows.Forms.Label()
         Me.DownloadButton = New System.Windows.Forms.Label()
         Me.BrowserButton = New System.Windows.Forms.Label()
+        Me.LocationButton = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'ImagePreviewBox
@@ -75,7 +76,7 @@ Partial Class PagePreviewItem
         Me.TitleLabel.Font = New System.Drawing.Font("微软雅黑", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
         Me.TitleLabel.Location = New System.Drawing.Point(216, 11)
         Me.TitleLabel.Name = "TitleLabel"
-        Me.TitleLabel.Size = New System.Drawing.Size(445, 30)
+        Me.TitleLabel.Size = New System.Drawing.Size(410, 30)
         Me.TitleLabel.TabIndex = 9
         Me.TitleLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
@@ -94,11 +95,20 @@ Partial Class PagePreviewItem
         'BrowserButton
         '
         Me.BrowserButton.Image = Global.GamerSkyLite.My.Resources.UnityResource.Browser_0
-        Me.BrowserButton.Location = New System.Drawing.Point(662, 11)
+        Me.BrowserButton.Location = New System.Drawing.Point(660, 8)
         Me.BrowserButton.Name = "BrowserButton"
         Me.BrowserButton.Size = New System.Drawing.Size(32, 32)
         Me.BrowserButton.TabIndex = 14
         Me.BrowserButton.Tag = "Browser_"
+        '
+        'LocationButton
+        '
+        Me.LocationButton.Image = Global.GamerSkyLite.My.Resources.UnityResource.Location_0
+        Me.LocationButton.Location = New System.Drawing.Point(627, 8)
+        Me.LocationButton.Name = "LocationButton"
+        Me.LocationButton.Size = New System.Drawing.Size(32, 32)
+        Me.LocationButton.TabIndex = 15
+        Me.LocationButton.Tag = "Location_"
         '
         'PagePreviewItem
         '
@@ -106,6 +116,7 @@ Partial Class PagePreviewItem
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.Transparent
         Me.BackgroundImage = Global.GamerSkyLite.My.Resources.UnityResource.PaperShadow
+        Me.Controls.Add(Me.LocationButton)
         Me.Controls.Add(Me.BrowserButton)
         Me.Controls.Add(Me.DownloadButton)
         Me.Controls.Add(Me.ImagePreviewBox)
@@ -125,4 +136,5 @@ Partial Class PagePreviewItem
     Private WithEvents TitleLabel As Label
     Friend WithEvents DownloadButton As Label
     Friend WithEvents BrowserButton As Label
+    Friend WithEvents LocationButton As Label
 End Class
