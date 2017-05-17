@@ -115,6 +115,8 @@ Public Class PagePreviewItem
     Private DownloadDirectory As String
     '记录已经下载的文件个数
     Private in_DownloadState As Integer
+    '下载出错
+    Private in_DownloadError As Integer
     '记录下载状态
     Private in_Downloading As Boolean
     '生成的HTML文件路径
@@ -212,6 +214,7 @@ Public Class PagePreviewItem
             DownloadButton.Text = "已经停止下载"
             ContentList = New List(Of Content)
             in_DownloadState = 0
+            in_DownloadError = 0
         End If
     End Sub
 
@@ -322,33 +325,43 @@ Public Class PagePreviewItem
         Dim ImageWebClient As WebClient = New WebClient()
         AddHandler ImageWebClient.DownloadFileCompleted,
             Sub(sender As Object, e As AsyncCompletedEventArgs)
-                'If e.Error Is Nothing Then
-                If in_DownloadState >= ContentList.Count - 1 Then
-                    DownloadCompleted()
-                    Exit Sub
+                If e.Error Is Nothing Then
+                    Try
+                        If in_DownloadState >= ContentList.Count - 1 Then
+                            DownloadCompleted()
+                            Exit Sub
+                        Else
+                            DownloadButton.Text = String.Format("下载进度：{0} / {1}", in_DownloadState, ContentList.Count)
+                            If File.ReadAllBytes(ImagePath).Length = 0 Then
+                                File.Delete(ImagePath)
+                                in_DownloadError += 1
+                            End If
+                        End If
+                    Catch ex As Exception
+                        MessageBox.ShowMessagebox("下载的文件为 0 byte！", in_DownloadState & vbCrLf & ex.Message, MessageBox.Icons._Error, ReaderForm)
+                    End Try
+
+                    Do While File.Exists(ImagePath) And in_DownloadState < ContentList.Count - 1
+                        If Not in_Downloading Then HTMLWriter.Close() : HTMLWriter.Dispose() : Exit Sub
+                        in_DownloadState += 1
+                        FileName = Path.GetFileName(ContentList(in_DownloadState).ImageLink)
+                        If HTMLWriter IsNot Nothing Then HTMLWriter.WriteLine("<img src="".\{0}"" alt=""{1}""><br>{2}<br><hr>", FileName, ContentList(in_DownloadState).ImageLink, ContentList(in_DownloadState).Text)
+                        ImagePath = DownloadDirectory & FileName
+                    Loop
+
+                    ImageWebClient.DownloadFileAsync(New Uri(ContentList(in_DownloadState).ImageLink), ImagePath)
                 Else
-                    DownloadButton.Text = String.Format("下载进度：{0} / {1}", in_DownloadState, ContentList.Count)
+                    'DownloadButton.Text = "下载失败：" & in_DownloadState
+                    'HTMLWriter.Close() : HTMLWriter.Dispose()
+                    'DownloadButton.ForeColor = Color.Red
+                    MessageBox.ShowMessagebox("下载失败！" + in_DownloadState, e.Error.Message, MessageBox.Icons._Error, ReaderForm)
+                    Try
+                        File.Delete(ImagePath)
+                    Catch ex As Exception
+                        MessageBox.ShowMessagebox("下载失败，删除缓存失败！", ex.Message, MessageBox.Icons._Error, ReaderForm)
+                    End Try
+                    in_DownloadError += 1
                 End If
-
-                Do While File.Exists(ImagePath) And in_DownloadState < ContentList.Count - 1
-                    If Not in_Downloading Then HTMLWriter.Close() : HTMLWriter.Dispose() : Exit Sub
-                    in_DownloadState += 1
-                    FileName = Path.GetFileName(ContentList(in_DownloadState).ImageLink)
-                    If HTMLWriter IsNot Nothing Then HTMLWriter.WriteLine("<img src="".\{0}"" alt=""{1}""><br>{2}<br><hr>", FileName, ContentList(in_DownloadState).ImageLink, ContentList(in_DownloadState).Text)
-                    ImagePath = DownloadDirectory & FileName
-                Loop
-
-                ImageWebClient.DownloadFileAsync(New Uri(ContentList(in_DownloadState).ImageLink), ImagePath)
-                'Else
-                'DownloadButton.Text = "下载失败：" & in_DownloadState
-                'HTMLWriter.Close() : HTMLWriter.Dispose()
-                'DownloadButton.ForeColor = Color.Red
-                'Try
-                'File.Delete(ImagePath)
-                'Catch ex As Exception
-                'MessageBox.ShowMessagebox("下载失败，删除缓存失败！", ex.Message, MessageBox.Icons._Error, ReaderForm)
-                'End Try
-                'End If
             End Sub
         ImageWebClient.DownloadFileAsync(New Uri(ContentList(in_DownloadState).ImageLink), ImagePath)
     End Sub
@@ -370,7 +383,8 @@ Public Class PagePreviewItem
 
     Private Sub DownloadCompleted()
         in_Downloading = False
-        DownloadButton.Text = "下载完成：" & ContentList.Count & " 张图片"
+        DownloadButton.Text = "成功：" & ContentList.Count & IIf(in_DownloadError > 0, " /失败：" & in_DownloadError, "")
+        DownloadButton.ForeColor = Color.Green
         If HTMLWriter IsNot Nothing Then ExportHTMLFoot()
     End Sub
 

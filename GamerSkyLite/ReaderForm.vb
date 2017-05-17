@@ -112,9 +112,9 @@ Public Class ReaderForm
         End If
     End Sub
 
-    Private Sub PreviewItemPanel_Click(sender As Object, e As EventArgs) Handles PreviewItemPanel.Click
-        PreviewItemPanel.Refresh()
-    End Sub
+    'Private Sub PreviewItemPanel_Click(sender As Object, e As EventArgs) Handles PreviewItemPanel.Click
+    '    PreviewItemPanel.Refresh()
+    'End Sub
 
     Private Sub GoBackButton_Click(sender As Object, e As EventArgs) Handles GoBackButton.Click
         If HTMLBrowser.Visible Then
