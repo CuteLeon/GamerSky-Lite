@@ -24,7 +24,8 @@
 
     Public Shared Sub ShowMessagebox(Title As String, Message As String, Icon As Icons, Owner As Form)
         Dim NewMessageBox As MessageBox = New MessageBox(Title, Message, Icon)
-        NewMessageBox.ShowDialog(Owner)
+        NewMessageBox.Show(Owner)
+        'NewMessageBox.ShowDialog(Owner)
     End Sub
 
     Private Sub MessageBox_Load(sender As Object, e As EventArgs) Handles MyBase.Load
