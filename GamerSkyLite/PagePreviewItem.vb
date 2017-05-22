@@ -424,6 +424,6 @@ Public Class PagePreviewItem
     End Sub
 
     Private Sub LocationButton_Click(sender As Object, e As EventArgs) Handles LocationButton.Click
-        Process.Start(Me.DownloadDirectory)
+        If Directory.Exists(Me.DownloadDirectory) Then Process.Start(Me.DownloadDirectory)
     End Sub
 End Class
