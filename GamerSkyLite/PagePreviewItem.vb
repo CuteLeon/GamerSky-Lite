@@ -366,7 +366,8 @@ Public Class PagePreviewItem
                     'DownloadButton.Text = "下载失败：" & in_DownloadState
                     'HTMLWriter.Close() : HTMLWriter.Dispose()
                     'DownloadButton.ForeColor = Color.Red
-                    MessageBox.ShowMessagebox("下载失败！" & in_DownloadState, e.Error.Message, MessageBox.Icons._Error, ReaderForm)
+
+                    'MessageBox.ShowMessagebox("下载失败！" & in_DownloadState, e.Error.Message, MessageBox.Icons._Error, ReaderForm)
                     Try
                         File.Delete(ImagePath)
                     Catch ex As Exception
@@ -401,6 +402,8 @@ Public Class PagePreviewItem
     End Sub
 
     Private Sub ExportHTMLHead()
+        HTMLWriter?.Close()
+        HTMLWriter?.Dispose()
         Try
             HTMLWriter = New StreamWriter(HTMLPath)
             HTMLWriter.Write("<html><head><meta http-equiv=""Content-Type"" content=""text/html; charset=utf-8"" /></head><body style=""width:70%;margin:0 auto""><center><pre><h1><strong>{0}</strong></h1></pre>" & vbCrLf, Title)
