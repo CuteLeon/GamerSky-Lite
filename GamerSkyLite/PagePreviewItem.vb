@@ -66,9 +66,9 @@ Public Class PagePreviewItem
         Set(value As String)
             Try
                 '没生成文章缓存文件夹的文章要改变标题颜色
-                If Directory.Exists(ReaderForm.CacheDirectory & Path.GetFileNameWithoutExtension(value)) Then
+                If Directory.Exists(DownloadDirectory) Then
                     'Debug.Print("存在：" & ReaderForm.CacheDirectory & Path.GetFileNameWithoutExtension(value))
-                    DownloadButton.Text = "已存在文件数：" & Directory.GetFiles(ReaderForm.CacheDirectory & Path.GetFileNameWithoutExtension(value)).Count
+                    DownloadButton.Text = "已存在文件数：" & Directory.GetFiles(DownloadDirectory).Count
                 Else
                     'Debug.Print("不存在：" & ReaderForm.CacheDirectory & Path.GetFileNameWithoutExtension(value))
                     TitleLabel.ForeColor = Color.DeepSkyBlue
@@ -169,9 +169,9 @@ Public Class PagePreviewItem
         '’初始化控件数据
         Title = strTitle
         Text = strText
-        ImageLink = strImageLink
         ItemID = Path.GetFileNameWithoutExtension(strImageLink)
         DownloadDirectory = ReaderForm.CacheDirectory & ItemID & "\"
+        ImageLink = strImageLink
         Time = strTime
         LinkAddress = strLinkAddress
         HTMLPath = DownloadDirectory & Title & ".html"
@@ -380,6 +380,10 @@ Public Class PagePreviewItem
         AddHandler LocationButton.MouseLeave, AddressOf MouseActiveEvent.MouseLeave
         AddHandler LocationButton.MouseDown, AddressOf MouseActiveEvent.MouseDown
         AddHandler LocationButton.MouseUp, AddressOf MouseActiveEvent.MouseUp
+        AddHandler DeleteButton.MouseEnter, AddressOf MouseActiveEvent.MouseEnter
+        AddHandler DeleteButton.MouseLeave, AddressOf MouseActiveEvent.MouseLeave
+        AddHandler DeleteButton.MouseDown, AddressOf MouseActiveEvent.MouseDown
+        AddHandler DeleteButton.MouseUp, AddressOf MouseActiveEvent.MouseUp
     End Sub
 
     Private Sub DownloadCompleted()
@@ -416,5 +420,35 @@ Public Class PagePreviewItem
 
     Private Sub LocationButton_Click(sender As Object, e As EventArgs) Handles LocationButton.Click
         If Directory.Exists(Me.DownloadDirectory) Then Process.Start(Me.DownloadDirectory)
+    End Sub
+
+    Private Sub DeleteButton_Click(sender As Object, e As EventArgs) Handles DeleteButton.Click
+        If Directory.Exists(Me.DownloadDirectory) Then
+            If in_Downloading Then
+                in_Downloading = False
+                DownloadButton.Text = "已经停止下载"
+                ContentList = New List(Of Content)
+                in_DownloadState = 0
+                in_DownloadError = 0
+            End If
+
+            For Each FilePath As String In Directory.GetFiles(DownloadDirectory)
+                Try
+                    FileSystem.Kill(FilePath)
+                Catch ex As Exception
+                    'MessageBox.ShowMessagebox("删除文章缓存失败！", ex.Message, MessageBox.Icons._Error, ReaderForm)
+                End Try
+            Next
+            Try
+                Directory.Delete(DownloadDirectory)
+            Catch ex As Exception
+                '
+            End Try
+        End If
+        If Directory.Exists(Me.DownloadDirectory) Then
+            DownloadButton.Text = "已存在文件数：" & Directory.GetFiles(DownloadDirectory).Count
+        Else
+            DownloadButton.Text = ""
+        End If
     End Sub
 End Class

@@ -278,6 +278,9 @@
     <None Include="Resources\Location_0.png" />
     <None Include="Resources\Location_1.png" />
     <None Include="Resources\Location_2.png" />
+    <None Include="Resources\Delete_0.png" />
+    <None Include="Resources\Delete_1.png" />
+    <None Include="Resources\Delete_2.png" />
     <Content Include="TaskList.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />

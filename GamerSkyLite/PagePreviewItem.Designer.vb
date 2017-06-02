@@ -29,6 +29,7 @@ Partial Class PagePreviewItem
         Me.DownloadButton = New System.Windows.Forms.Label()
         Me.BrowserButton = New System.Windows.Forms.Label()
         Me.LocationButton = New System.Windows.Forms.Label()
+        Me.DeleteButton = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'ImagePreviewBox
@@ -86,7 +87,7 @@ Partial Class PagePreviewItem
         Me.DownloadButton.ForeColor = System.Drawing.Color.DodgerBlue
         Me.DownloadButton.Image = Global.GamerSkyLite.My.Resources.UnityResource.Download_0
         Me.DownloadButton.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.DownloadButton.Location = New System.Drawing.Point(499, 101)
+        Me.DownloadButton.Location = New System.Drawing.Point(484, 101)
         Me.DownloadButton.Name = "DownloadButton"
         Me.DownloadButton.Size = New System.Drawing.Size(167, 20)
         Me.DownloadButton.TabIndex = 13
@@ -110,12 +111,22 @@ Partial Class PagePreviewItem
         Me.LocationButton.TabIndex = 15
         Me.LocationButton.Tag = "Location_"
         '
+        'DeleteButton
+        '
+        Me.DeleteButton.Image = Global.GamerSkyLite.My.Resources.UnityResource.Delete_0
+        Me.DeleteButton.Location = New System.Drawing.Point(660, 90)
+        Me.DeleteButton.Name = "DeleteButton"
+        Me.DeleteButton.Size = New System.Drawing.Size(32, 32)
+        Me.DeleteButton.TabIndex = 16
+        Me.DeleteButton.Tag = "Delete_"
+        '
         'PagePreviewItem
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.Transparent
         Me.BackgroundImage = Global.GamerSkyLite.My.Resources.UnityResource.PaperShadow
+        Me.Controls.Add(Me.DeleteButton)
         Me.Controls.Add(Me.LocationButton)
         Me.Controls.Add(Me.BrowserButton)
         Me.Controls.Add(Me.DownloadButton)
@@ -137,4 +148,5 @@ Partial Class PagePreviewItem
     Friend WithEvents DownloadButton As Label
     Friend WithEvents BrowserButton As Label
     Friend WithEvents LocationButton As Label
+    Friend WithEvents DeleteButton As Label
 End Class
