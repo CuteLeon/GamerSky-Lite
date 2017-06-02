@@ -105,7 +105,7 @@ Public Class ReaderForm
                     File.Delete(PreviewFile)
                 Next
             Catch ex As Exception
-                MessageBox.ShowMessagebox("删除首页图像缓存时出错", ex.Message, MessageBox.Icons._Error, Me)
+                'MessageBox.ShowMessagebox("删除首页图像缓存时出错", ex.Message, MessageBox.Icons._Error, Me)
             End Try
 
             GamerSkyHomeProcess.ScanHome(HomeURL)
@@ -120,13 +120,13 @@ Public Class ReaderForm
         If HTMLBrowser.Visible Then
             HTMLBrowser.Hide()
         Else
-            HTMLBrowser.BringToFront()
+            'HTMLBrowser.BringToFront()
             HTMLBrowser.Show()
         End If
     End Sub
 
     Public Sub BrowseHTML(HTMLPath)
-        HTMLBrowser.BringToFront()
+        'HTMLBrowser.BringToFront()
         HTMLBrowser.Show()
         HTMLBrowser.Navigate(HTMLPath)
         HTMLBrowser.Focus()

@@ -65,21 +65,21 @@ Public Class PagePreviewItem
         End Get
         Set(value As String)
             Try
+                '没生成文章缓存文件夹的文章要改变标题颜色
+                If Directory.Exists(ReaderForm.CacheDirectory & Path.GetFileNameWithoutExtension(value)) Then
+                    'Debug.Print("存在：" & ReaderForm.CacheDirectory & Path.GetFileNameWithoutExtension(value))
+                    DownloadButton.Text = "已存在文件数：" & Directory.GetFiles(ReaderForm.CacheDirectory & Path.GetFileNameWithoutExtension(value)).Count
+                Else
+                    'Debug.Print("不存在：" & ReaderForm.CacheDirectory & Path.GetFileNameWithoutExtension(value))
+                    TitleLabel.ForeColor = Color.DeepSkyBlue
+                End If
+
                 '没下载预览图片的文章要斜体显示标题
                 If File.Exists(ReaderForm.CacheDirectory & Path.GetFileName(value)) Then
                     ImagePreviewBox.Text = vbNullString
                     Using PreviewImageStream As FileStream = New FileStream(ReaderForm.CacheDirectory & Path.GetFileName(value), FileMode.Open)
                         ImagePreviewBox.Image = Image.FromStream(PreviewImageStream)
                     End Using
-
-                    '没生成文章缓存文件夹的文章要改变标题颜色
-                    If Directory.Exists(ReaderForm.CacheDirectory & Path.GetFileNameWithoutExtension(value)) Then
-                        Debug.Print("存在：" & ReaderForm.CacheDirectory & Path.GetFileNameWithoutExtension(value))
-                        DownloadButton.Text = "已存在文件数：" & Directory.GetFiles(ReaderForm.CacheDirectory & Path.GetFileNameWithoutExtension(value)).Count
-                    Else
-                        Debug.Print("不存在：" & ReaderForm.CacheDirectory & Path.GetFileNameWithoutExtension(value))
-                        TitleLabel.ForeColor = Color.DeepSkyBlue
-                    End If
 
                     Exit Property
                 Else
