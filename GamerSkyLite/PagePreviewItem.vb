@@ -65,13 +65,9 @@ Public Class PagePreviewItem
         End Get
         Set(value As String)
             Try
-                '没生成文章缓存文件夹的文章要改变标题颜色
                 If Directory.Exists(DownloadDirectory) Then
                     'Debug.Print("存在：" & ReaderForm.CacheDirectory & Path.GetFileNameWithoutExtension(value))
                     DownloadButton.Text = "已存在文件数：" & Directory.GetFiles(DownloadDirectory).Count
-                Else
-                    'Debug.Print("不存在：" & ReaderForm.CacheDirectory & Path.GetFileNameWithoutExtension(value))
-                    TitleLabel.ForeColor = Color.DeepSkyBlue
                 End If
 
                 '没下载预览图片的文章要斜体显示标题
@@ -84,8 +80,8 @@ Public Class PagePreviewItem
                     Exit Property
                 Else
                     TitleLabel.Font = New Font(TitleLabel.Font, FontStyle.Italic Or FontStyle.Underline Or FontStyle.Bold)
+                    TitleLabel.ForeColor = Color.DeepSkyBlue
                 End If
-
 
                 Dim ImageWebClient As WebClient = New WebClient With {.BaseAddress = value, .Credentials = CredentialCache.DefaultCredentials}
                 AddHandler ImageWebClient.DownloadFileCompleted,
@@ -185,7 +181,13 @@ Public Class PagePreviewItem
     End Sub
 
     Private Sub PagePreviewItem_MouseLeave(sender As Object, e As EventArgs) Handles Me.MouseLeave, TitleLabel.MouseLeave, TextLabel.MouseLeave, TimeLabel.MouseLeave, ImagePreviewBox.MouseLeave
-        TitleLabel.ForeColor = Color.Black
+        With TitleLabel
+            If .Font.Underline Then
+                .ForeColor = Color.DeepSkyBlue
+            Else
+                .ForeColor = Color.DimGray
+            End If
+        End With
     End Sub
 
     Private Sub PagePreviewItem_MouseUp(sender As Object, e As MouseEventArgs) Handles Me.MouseUp, TitleLabel.MouseUp, TextLabel.MouseUp, TimeLabel.MouseUp, ImagePreviewBox.MouseUp
@@ -193,7 +195,7 @@ Public Class PagePreviewItem
     End Sub
 
     Private Sub PagePreviewItem_MouseDown(sender As Object, e As MouseEventArgs) Handles Me.MouseDown, TitleLabel.MouseDown, TextLabel.MouseDown, TimeLabel.MouseDown, ImagePreviewBox.MouseDown
-        TitleLabel.ForeColor = Color.DarkRed
+        TitleLabel.ForeColor = Color.DarkBlue
     End Sub
 
 #End Region

@@ -100,14 +100,6 @@ Public Class ReaderForm
                 PreviewItemPanel.Controls(0).Dispose()
             Loop
 
-            Try
-                For Each PreviewFile As String In Directory.GetFiles(CacheDirectory)
-                    File.Delete(PreviewFile)
-                Next
-            Catch ex As Exception
-                'MessageBox.ShowMessagebox("删除首页图像缓存时出错", ex.Message, MessageBox.Icons._Error, Me)
-            End Try
-
             GamerSkyHomeProcess.ScanHome(HomeURL)
         End If
     End Sub

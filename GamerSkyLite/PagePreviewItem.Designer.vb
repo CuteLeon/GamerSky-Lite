@@ -63,7 +63,7 @@ Partial Class PagePreviewItem
         Me.TextLabel.BackColor = System.Drawing.Color.Transparent
         Me.TextLabel.CausesValidation = False
         Me.TextLabel.Font = New System.Drawing.Font("微软雅黑", 10.5!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
-        Me.TextLabel.ForeColor = System.Drawing.SystemColors.ControlDarkDark
+        Me.TextLabel.ForeColor = System.Drawing.SystemColors.ControlDark
         Me.TextLabel.Location = New System.Drawing.Point(216, 41)
         Me.TextLabel.Name = "TextLabel"
         Me.TextLabel.Size = New System.Drawing.Size(480, 60)
@@ -75,6 +75,7 @@ Partial Class PagePreviewItem
         Me.TitleLabel.BackColor = System.Drawing.Color.Transparent
         Me.TitleLabel.CausesValidation = False
         Me.TitleLabel.Font = New System.Drawing.Font("微软雅黑", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
+        Me.TitleLabel.ForeColor = System.Drawing.Color.DimGray
         Me.TitleLabel.Location = New System.Drawing.Point(216, 11)
         Me.TitleLabel.Name = "TitleLabel"
         Me.TitleLabel.Size = New System.Drawing.Size(410, 30)
