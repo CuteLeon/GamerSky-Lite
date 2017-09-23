@@ -84,6 +84,7 @@ Partial Class PagePreviewItem
         '
         'DownloadButton
         '
+        Me.DownloadButton.BackColor = System.Drawing.Color.White
         Me.DownloadButton.Font = New System.Drawing.Font("微软雅黑", 10.5!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
         Me.DownloadButton.ForeColor = System.Drawing.Color.DodgerBlue
         Me.DownloadButton.Image = Global.GamerSkyLite.My.Resources.UnityResource.Download_0
@@ -96,6 +97,7 @@ Partial Class PagePreviewItem
         '
         'BrowserButton
         '
+        Me.BrowserButton.BackColor = System.Drawing.Color.White
         Me.BrowserButton.Image = Global.GamerSkyLite.My.Resources.UnityResource.Browser_0
         Me.BrowserButton.Location = New System.Drawing.Point(660, 8)
         Me.BrowserButton.Name = "BrowserButton"
@@ -105,6 +107,7 @@ Partial Class PagePreviewItem
         '
         'LocationButton
         '
+        Me.LocationButton.BackColor = System.Drawing.Color.White
         Me.LocationButton.Image = Global.GamerSkyLite.My.Resources.UnityResource.Location_0
         Me.LocationButton.Location = New System.Drawing.Point(627, 8)
         Me.LocationButton.Name = "LocationButton"
@@ -114,6 +117,7 @@ Partial Class PagePreviewItem
         '
         'DeleteButton
         '
+        Me.DeleteButton.BackColor = System.Drawing.Color.White
         Me.DeleteButton.Image = Global.GamerSkyLite.My.Resources.UnityResource.Delete_0
         Me.DeleteButton.Location = New System.Drawing.Point(660, 90)
         Me.DeleteButton.Name = "DeleteButton"
@@ -125,7 +129,7 @@ Partial Class PagePreviewItem
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.BackColor = System.Drawing.Color.Transparent
+        Me.BackColor = System.Drawing.Color.WhiteSmoke
         Me.BackgroundImage = Global.GamerSkyLite.My.Resources.UnityResource.PaperShadow
         Me.Controls.Add(Me.DeleteButton)
         Me.Controls.Add(Me.LocationButton)
