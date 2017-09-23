@@ -69,7 +69,6 @@ Public Class PagePreviewItem
                     'Debug.Print("存在：" & ReaderForm.CacheDirectory & Path.GetFileNameWithoutExtension(value))
                     DownloadButton.Text = "已存在文件数：" & Directory.GetFiles(DownloadDirectory).Count
                 End If
-
                 '没下载预览图片的文章要斜体显示标题
                 If File.Exists(ReaderForm.CacheDirectory & Path.GetFileName(value)) Then
                     ImagePreviewBox.Text = vbNullString
@@ -166,6 +165,7 @@ Public Class PagePreviewItem
         Title = strTitle
         Text = strText
         ItemID = Path.GetFileNameWithoutExtension(strImageLink)
+        Me.Name = "child_" & ItemID
         DownloadDirectory = ReaderForm.CacheDirectory & ItemID & "\"
         ImageLink = strImageLink
         Time = strTime
@@ -202,6 +202,8 @@ Public Class PagePreviewItem
 
 #Region "下载按钮"
     Private Sub DownloadButton_Click(sender As Object, e As EventArgs) Handles DownloadButton.Click
+        If (Me.LinkAddress.EndsWith(".com")) Then Exit Sub
+
         If Not in_Downloading Then
             If ContentList.Count > 0 AndAlso in_DownloadState = ContentList.Count - 1 Then
                 '已经下载完成

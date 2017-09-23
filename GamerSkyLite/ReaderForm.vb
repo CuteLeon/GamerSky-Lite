@@ -112,13 +112,13 @@ Public Class ReaderForm
         If HTMLBrowser.Visible Then
             HTMLBrowser.Hide()
         Else
-            'HTMLBrowser.BringToFront()
+            HTMLBrowser.BringToFront()
             HTMLBrowser.Show()
         End If
     End Sub
 
     Public Sub BrowseHTML(HTMLPath)
-        'HTMLBrowser.BringToFront()
+        HTMLBrowser.BringToFront()
         HTMLBrowser.Show()
         HTMLBrowser.Navigate(HTMLPath)
         HTMLBrowser.Focus()

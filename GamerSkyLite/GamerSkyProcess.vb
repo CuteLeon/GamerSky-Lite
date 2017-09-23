@@ -1,4 +1,5 @@
-﻿Imports System.Net
+﻿Imports System.IO
+Imports System.Net
 Imports System.Text
 Imports System.Text.RegularExpressions
 
@@ -6,6 +7,7 @@ Public Module GamerSkyHomeProcess
 
     Public Sub ScanHome(HomeLink As String)
         GetHTML(HomeLink, AddressOf AnalysisHome)
+        ScanLocalContent()
     End Sub
 
     Public Sub GetHTML(LinkAddress As String, AnalysisFunction As Action(Of String))
@@ -52,5 +54,23 @@ Public Module GamerSkyHomeProcess
             T.Show()
         Next
     End Sub
+
+    Private Sub ScanLocalContent()
+        For Each ChildDir As String In Directory.GetDirectories(ReaderForm.CacheDirectory)
+            If (ReaderForm.PreviewItemPanel.Controls.Find("child_" + Path.GetFileName(ChildDir), True).Count = 0) Then
+                Dim T As PagePreviewItem = New PagePreviewItem(
+                    Path.GetFileNameWithoutExtension(Directory.GetFiles(ChildDir).Last()),
+                    "已缓存文章",
+                    "downloaded\\" & Path.GetFileName(ChildDir) + ".jpg",
+                    "",
+                    "")
+                T.Left = 0
+                T.Top = ReaderForm.PreviewItemPanel.Controls.Count * T.Height
+                ReaderForm.PreviewItemPanel.Controls.Add(T)
+                T.Show()
+            End If
+        Next
+    End Sub
+
 
 End Module
