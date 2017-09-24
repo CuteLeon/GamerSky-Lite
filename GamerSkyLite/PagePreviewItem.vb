@@ -168,6 +168,10 @@ Public Class PagePreviewItem
         Me.Name = "child_" & ItemID
         DownloadDirectory = ReaderForm.CacheDirectory & ItemID & "\"
         ImageLink = strImageLink
+        If (strImageLink.StartsWith("downloaded\\")) Then
+            TitleLabel.Font = New Font(TitleLabel.Font, FontStyle.Italic Or FontStyle.Underline Or FontStyle.Bold)
+            TitleLabel.ForeColor = Color.DeepSkyBlue
+        End If
         Time = strTime
         LinkAddress = strLinkAddress
         HTMLPath = DownloadDirectory & Title & ".html"
