@@ -16,7 +16,10 @@ Public Module GamerSkyHomeProcess
             WebClientObject.Credentials = CredentialCache.DefaultCredentials
             AddHandler WebClientObject.DownloadStringCompleted,
                 Sub(sender As Object, e As DownloadStringCompletedEventArgs)
-                    If Not e.Error Is Nothing Then MessageBox.ShowMessagebox("异步读取时出错：" & LinkAddress, e.Error.Message, MessageBox.Icons._Error, ReaderForm) : Exit Sub
+                    If Not e.Error Is Nothing Then
+                        'MessageBox.ShowMessagebox("异步读取时出错：" & LinkAddress, e.Error.Message, MessageBox.Icons._Error, ReaderForm)
+                        Exit Sub
+                    End If
                     AnalysisFunction(e.Result)
                 End Sub
             WebClientObject.DownloadStringAsync(New Uri(LinkAddress))
@@ -49,7 +52,7 @@ Public Module GamerSkyHomeProcess
                     ItemMatchResult.Groups("time").Value,
                 ItemMatchResult.Groups("link").Value)
                 T.Left = 0
-                T.Top = Index * T.Height
+                T.Top = ReaderForm.PreviewItemPanel.Controls.Count * T.Height
                 ReaderForm.PreviewItemPanel.Controls.Add(T)
                 T.Show()
             Next

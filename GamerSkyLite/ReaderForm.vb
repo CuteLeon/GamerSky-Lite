@@ -2,10 +2,13 @@
 
 Public Class ReaderForm
 
-    ''' <summary>
-    ''' 文章目录的主页地址
-    ''' </summary>
-    Private Const HomeURL As String = "http://www.gamersky.com/ent/qw/"
+    Dim HomeURL() As String = New String() {
+        "http://www.gamersky.com/ent/qw/",
+        "http://www.gamersky.com/ent/wq/",
+        "http://www.gamersky.com/ent/discovery/",
+        "http://www.gamersky.com/wenku/",
+        "http://www.gamersky.com/wenku/movie/"
+    }
 
     ''' <summary>
     ''' 存放图像缓存的路径
@@ -39,7 +42,13 @@ Public Class ReaderForm
         End Try
 
         '获取首页文章列表
-        GamerSkyHomeProcess.ScanHome(HomeURL)
+        For Each childURL As String In HomeURL
+            Try
+                ScanHome(childURL)
+            Catch ex As Exception
+
+            End Try
+        Next
     End Sub
 
 #Region "窗体大小改变"
@@ -100,24 +109,30 @@ Public Class ReaderForm
                 PreviewItemPanel.Controls(0).Dispose()
             Loop
 
-            GamerSkyHomeProcess.ScanHome(HomeURL)
+            For Each childURL As String In HomeURL
+                GamerSkyHomeProcess.ScanHome(childURL)
+            Next
         End If
     End Sub
 
     'Private Sub PreviewItemPanel_Click(sender As Object, e As EventArgs) Handles PreviewItemPanel.Click
     '    PreviewItemPanel.Refresh()
     'End Sub
+    Dim a As Integer
 
     Private Sub GoBackButton_Click(sender As Object, e As EventArgs) Handles GoBackButton.Click
         If HTMLBrowser.Visible Then
             HTMLBrowser.Hide()
+            PreviewItemPanel.VerticalScroll.Value = a
         Else
+            a = PreviewItemPanel.VerticalScroll.Value
             HTMLBrowser.BringToFront()
             HTMLBrowser.Show()
         End If
     End Sub
 
     Public Sub BrowseHTML(HTMLPath)
+        a = PreviewItemPanel.VerticalScroll.Value
         HTMLBrowser.BringToFront()
         HTMLBrowser.Show()
         HTMLBrowser.Navigate(HTMLPath)
