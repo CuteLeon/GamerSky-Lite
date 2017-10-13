@@ -3,12 +3,12 @@
 Public Class ReaderForm
 
     Dim HomeURL() As String = New String() {
-        "http://www.gamersky.com/ent/qw/",
-        "http://www.gamersky.com/ent/wq/",
-        "http://www.gamersky.com/ent/discovery/",
-        "http://www.gamersky.com/wenku/",
-        "http://www.gamersky.com/wenku/movie/"
+        "http://www.gamersky.com/ent/qw/"
     }
+    '"http://www.gamersky.com/ent/wq/",
+    '"http://www.gamersky.com/ent/discovery/",
+    '"http://www.gamersky.com/wenku/",
+    '"http://www.gamersky.com/wenku/movie/"
 
     ''' <summary>
     ''' 存放图像缓存的路径
